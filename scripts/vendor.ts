@@ -34,4 +34,14 @@ export function vendorRuntime(targetDir: string): void {
     }
     copyFileSync(source, join(targetDir, file));
   }
+
+  copyLicense(dirname(transformersDir), targetDir, "LICENSE.transformers");
+  copyLicense(dirname(onnxDir), targetDir, "LICENSE.onnxruntime-web");
+}
+
+function copyLicense(packageDir: string, targetDir: string, name: string): void {
+  const source = join(packageDir, "LICENSE");
+  if (existsSync(source)) {
+    copyFileSync(source, join(targetDir, name));
+  }
 }
