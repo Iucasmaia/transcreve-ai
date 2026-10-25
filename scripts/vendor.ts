@@ -40,8 +40,17 @@ export function vendorRuntime(targetDir: string): void {
 }
 
 function copyLicense(packageDir: string, targetDir: string, name: string): void {
-  const source = join(packageDir, "LICENSE");
-  if (existsSync(source)) {
-    copyFileSync(source, join(targetDir, name));
+  for (const candidate of ["LICENSE", "LICENSE.txt", "LICENSE.md"]) {
+    const source = join(packageDir, candidate);
+    if (existsSync(source)) {
+      copyFileSync(source, join(targetDir, name));
+      return;
+    }
   }
+  const fallback = join(import.meta.dirname, "licenses", name);
+  if (existsSync(fallback)) {
+    copyFileSync(fallback, join(targetDir, name));
+    return;
+  }
+  throw new Error(`missing license for ${packageDir}`);
 }
