@@ -35,7 +35,7 @@ const HOST_PERMISSIONS = [
 ];
 
 const CONTENT_SECURITY_POLICY =
-  "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self' blob:";
+  "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; worker-src 'self'";
 
 export function buildManifest(target: BrowserTarget, version: string): Record<string, unknown> {
   const manifest: Record<string, unknown> = {
@@ -86,7 +86,7 @@ export function buildManifest(target: BrowserTarget, version: string): Record<st
     manifest["browser_specific_settings"] = {
       gecko: {
         id: "transcreve-ai@lucasmaia.dev",
-        strict_min_version: "128.0",
+        strict_min_version: "140.0",
         data_collection_permissions: {
           required: ["none"],
           optional: ["authenticationInfo", "personalCommunications", "websiteContent"],
