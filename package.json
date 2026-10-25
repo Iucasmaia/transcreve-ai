@@ -1,6 +1,6 @@
 {
   "name": "transcreve-ai",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "type": "module",
   "description": "Transcrição de mensagens de voz do WhatsApp Web: AssemblyAI, OpenAI, Gemini ou Whisper local.",

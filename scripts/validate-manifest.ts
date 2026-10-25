@@ -4,6 +4,20 @@ import { join } from "node:path";
 const TARGETS = ["chrome", "firefox"] as const;
 const ASSET = /\.(js|html|css|png|json)$/;
 const REMOTE_SOURCE = /(src|script-src)[^;]*https?:\/\//;
+const DATA_COLLECTION_VALUES = [
+  "authenticationInfo",
+  "bookmarksInfo",
+  "browsingActivity",
+  "financialAndPaymentInfo",
+  "healthInfo",
+  "locationInfo",
+  "personalCommunications",
+  "personallyIdentifyingInfo",
+  "searchTerms",
+  "technicalAndInteraction",
+  "websiteActivity",
+  "websiteContent",
+];
 
 interface ManifestLike {
   [key: string]: unknown;
@@ -63,6 +77,43 @@ for (const target of TARGETS) {
   const locales = existsSync(localeDir) ? readdirSync(localeDir).length : 0;
   if (locales !== 7) {
     failures.push(`${target}: expected 7 locales, found ${locales}`);
+  }
+
+  if (target === "firefox") {
+    const gecko = (manifest["browser_specific_settings"] as { gecko?: Record<string, unknown> } | undefined)?.gecko;
+    const permissions = gecko?.["data_collection_permissions"] as
+      | { required?: unknown; optional?: unknown }
+      | undefined;
+    if (!permissions) {
+      failures.push("firefox: data_collection_permissions is missing");
+    } else {
+      const required = permissions["required"];
+      const optional = permissions["optional"];
+      if (!Array.isArray(required) || required.length === 0) {
+        failures.push("firefox: data_collection_permissions.required must be a non-empty array");
+      } else if (
+        !required.every(
+          (value: unknown) =>
+            value === "none" ||
+            (typeof value === "string" && DATA_COLLECTION_VALUES.includes(value)),
+        )
+      ) {
+        failures.push("firefox: data_collection_permissions.required has an unknown value");
+      } else if (required.includes("none") && required.length > 1) {
+        failures.push("firefox: data_collection_permissions.required cannot mix none with other values");
+      }
+      if (
+        optional !== undefined &&
+        (!Array.isArray(optional) ||
+          optional.length === 0 ||
+          !optional.every(
+            (value: unknown) =>
+              typeof value === "string" && DATA_COLLECTION_VALUES.includes(value),
+          ))
+      ) {
+        failures.push("firefox: data_collection_permissions.optional has an unknown value");
+      }
+    }
   }
 
   const shortName = manifest["short_name"];

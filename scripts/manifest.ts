@@ -85,8 +85,12 @@ export function buildManifest(target: BrowserTarget, version: string): Record<st
     manifest["options_ui"] = { page: "options.html", open_in_tab: true };
     manifest["browser_specific_settings"] = {
       gecko: {
-        id: "transcreve-ai@lucasmaia.org",
+        id: "transcreve-ai@lucasmaia.dev",
         strict_min_version: "128.0",
+        data_collection_permissions: {
+          required: ["none"],
+          optional: ["authenticationInfo", "personalCommunications", "websiteContent"],
+        },
       },
     };
   }
