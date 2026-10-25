@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Transcreve.ai</title>
+  <link rel="stylesheet" href="settings.css" />
+</head>
+<body class="popup">
+  <div class="card">
+    <h1><span data-i18n="appTitle">Transcrição de Áudio</span><button id="themeToggle" type="button" class="theme-toggle" aria-label="Alternar tema" title="Alternar tema claro/escuro"></button></h1>
+
+    <label class="field-label" for="uiLanguage" data-i18n="uiLanguage">Idioma da interface</label>
+    <select id="uiLanguage">
+      <option value="auto" data-i18n="autoDetect">Automático</option>
+      <option value="en">English</option>
+      <option value="pt-BR">Português (Brasil)</option>
+      <option value="pt-PT">Português (Portugal)</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+      <option value="it">Italiano</option>
+      <option value="ru">Русский</option>
+    </select>
+
+    <label class="field-label" for="provider" data-i18n="provider">Provedor</label>
+    <select id="provider">
+      <option value="local">Local (Whisper)</option>
+      <option value="assemblyai">AssemblyAI</option>
+      <option value="openai">OpenAI (Whisper)</option>
+      <option value="gemini">Google Gemini</option>
+    </select>
+
+    <div id="keyRow">
+      <label class="field-label" for="apiKey" data-i18n="apiKey">Chave de API</label>
+      <div class="key-row">
+        <input id="apiKey" type="password" placeholder="Cole aqui sua API key" autocomplete="off" spellcheck="false" />
+        <button id="toggleKey" type="button" class="secondary">Mostrar</button>
+      </div>
+    </div>
+    <p id="keyHint" class="hint"></p>
+
+    <div id="modelRow">
+      <label class="field-label" for="model" data-i18n="model">Modelo</label>
+      <input id="model" type="text" list="modelOptions" autocomplete="off" spellcheck="false" />
+      <datalist id="modelOptions"></datalist>
+      <p id="modelHint" class="hint"></p>
+    </div>
+
+    <div id="localModel" class="local-model" hidden>
+      <p class="hint" data-i18n="localModelNotice">O modelo é baixado uma vez do Hugging Face (~40–80 MB) e fica no cache do navegador. Nada além do download sai da sua máquina.</p>
+      <div id="localModelBar" class="progress" data-state="idle"><div id="localModelFill" class="progress-fill"></div></div>
+      <p id="localModelState" class="hint"></p>
+    </div>
+
+    <label class="field-label" data-i18n="audioLanguage">Idioma do áudio</label>
+    <label class="radio-row">
+      <input id="modeAuto" type="radio" name="languageMode" value="auto" checked />
+      <span data-i18n="auto">Automático</span>
+    </label>
+    <label class="radio-row">
+      <input id="modeManual" type="radio" name="languageMode" value="manual" />
+      <span data-i18n="fixed">Fixo:</span>
+      <select id="languageCode">
+        <option value="pt">Português</option>
+        <option value="en">English</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
+        <option value="it">Italiano</option>
+        <option value="nl">Nederlands</option>
+        <option value="ja">日本語</option>
+        <option value="zh">中文</option>
+        <option value="ru">Русский</option>
+        <option value="ko">한국어</option>
+        <option value="hi">हिन्दी</option>
+        <option value="pl">Polski</option>
+        <option value="tr">Türkçe</option>
+        <option value="uk">Українська</option>
+        <option value="ar">العربية</option>
+      </select>
+    </label>
+
+    <label class="field-label" for="autoMode" data-i18n="autoTranscribeSection">Transcrição automática</label>
+    <select id="autoMode">
+      <option value="off" data-i18n="autoOff">Desligada</option>
+      <option value="chat" data-i18n="autoChat">Somente na conversa aberta</option>
+      <option value="all" data-i18n="autoAll" selected>Todas as conversas</option>
+    </select>
+
+    <label class="field-label" data-i18n="autoScope">Tipos de conversa</label>
+    <label class="radio-row">
+      <input id="autoContacts" type="checkbox" />
+      <span data-i18n="scopeContacts">Contatos</span>
+    </label>
+    <label class="radio-row">
+      <input id="autoGroups" type="checkbox" />
+      <span data-i18n="scopeGroups">Grupos</span>
+    </label>
+    <label class="radio-row">
+      <input id="autoChannels" type="checkbox" />
+      <span data-i18n="scopeChannels">Canais</span>
+    </label>
+
+    <div class="actions">
+      <button id="save" type="button" class="primary" data-i18n="save">Salvar</button>
+    </div>
+    <div id="status" class="status"></div>
+
+    <h2 class="section-title" data-i18n="cacheTitle">Cache de transcrições</h2>
+    <p id="cacheCount" class="hint"></p>
+    <label class="field-label" for="cacheConversation" data-i18n="conversation">Conversa</label>
+    <select id="cacheConversation"></select>
+    <div class="actions">
+      <button id="clearChat" type="button" class="secondary" data-i18n="clearChat">Limpar conversa</button>
+      <button id="clearAll" type="button" class="secondary" data-i18n="clearAll">Limpar tudo</button>
+    </div>
+    <div id="cacheStatus" class="status"></div>
+
+    <p class="credits">
+      <span data-i18n="madeBy">Feito por</span> <a href="https://github.com/Iucasmaia" target="_blank" rel="noopener noreferrer"><b>Lucas Maia</b></a>
+      · <a href="https://github.com/Iucasmaia" target="_blank" rel="noopener noreferrer">github.com/Iucasmaia</a>
+    </p>
+    <p class="disclaimer" data-i18n="disclaimer">Projeto independente, sem vínculo com o WhatsApp ou a Meta.</p>
+  </div>
+  <script src="settings.js"></script>
+</body>
+</html>

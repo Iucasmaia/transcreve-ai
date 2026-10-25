@@ -1,0 +1,41 @@
+{
+  "name": "transcreve-ai",
+  "version": "1.4.0",
+  "private": true,
+  "type": "module",
+  "description": "Transcrição de mensagens de voz do WhatsApp Web: AssemblyAI, OpenAI, Gemini ou Whisper local.",
+  "scripts": {
+    "dev": "tsx scripts/build.ts --watch",
+    "build": "yarn typecheck && tsx scripts/build.ts",
+    "package": "tsx scripts/package.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests scripts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "vendor": "tsx scripts/vendor.ts",
+    "validate": "yarn validate:comments && yarn validate:file-size && yarn validate:boundaries && yarn validate:i18n && yarn validate:manifest",
+    "validate:comments": "tsx scripts/validate-comments.ts",
+    "validate:file-size": "tsx scripts/validate-file-size.ts",
+    "validate:boundaries": "tsx scripts/validate-boundaries.ts",
+    "validate:i18n": "tsx scripts/validate-i18n.ts",
+    "validate:manifest": "tsx scripts/validate-manifest.ts"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.12.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "4.3.1",
+    "onnxruntime-web": "1.31.0-dev.20260914-8d85527a0",
+    "@types/chrome": "^0.0.287",
+    "@types/node": "^22.10.2",
+    "@types/webextension-polyfill": "^0.12.1",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.17.0",
+    "jsdom": "^25.0.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vitest": "^2.1.8"
+  }
+}
